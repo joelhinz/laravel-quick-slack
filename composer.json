@@ -1,0 +1,31 @@
+{
+    "name": "joelhinz/laravel-quick-slack",
+    "description": "An easy way of quickly sending messages to predefined Slack endpoints within a Laravel project.",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "illuminate/support": "^5.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joel Hinz",
+            "email": "joel.hinz@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "JoelHinz\\LaravelQuickSlack\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JoelHinz\\LaravelQuickSlack\\LaravelQuickSlackServiceProvider"
+            ]
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4"
+    }
+}
