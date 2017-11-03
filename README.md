@@ -7,7 +7,7 @@ A simple package to quickly send messages to Slack channels through Laravel. Tes
 Use Composer to install the package:
 
 ```bash
-composer require joelhinz/laravel-quick-slack
+composer require "joelhinz/laravel-quick-slack=0.*"
 ```
 
 This package supports auto-discovery, so if you're using Laravel 5.5, you're all set.

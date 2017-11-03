@@ -4,7 +4,7 @@
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "^6.3",
-        "illuminate/support": "^5.5"
+        "illuminate/support": "^5.4"
     },
     "license": "MIT",
     "authors": [
