@@ -131,6 +131,17 @@ When sending a message, QuickSlack will determine which endpoint to use in the f
 2. The webhook given in the last `to()` call if the remember option is set to true.
 3. The default webhook in the configuration file.
 
+## TODO
+
+Planned functionality includes
+
+* Automated tests and Travis integration
+* Style CI integration
+* Support for custom emojis and usernames
+* Support for changing channel ad-hoc
+* Support for saved teams in the configuration
+* Support for additional styling as per Slack's payload documentation
+
 ## License
 
 Standard MIT License (MIT), available in [LICENSE](LICENSE).
