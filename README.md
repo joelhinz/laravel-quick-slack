@@ -12,24 +12,23 @@ composer require "joelhinz/laravel-quick-slack=0.*"
 
 This package supports auto-discovery, so if you're using Laravel 5.5, you're all set.
 
-For Laravel 5.4, add the provider and optionally the facade alias to your `config/app.php` file:
+For Laravel 5.4, or if you don't want to use auto-discovery, add the provider and optionally the facade alias to your `config/app.php` file:
 
 ```php
 'providers' => [
     // ...
-    JoelHinz\LaravelQuickSlack\LaravelQuickSlackServiceProvider::class,
+    JoelHinz\LaravelQuickSlack\ServiceProvider::class,
 ],
 
-// ...
 'aliases' => [
     // ...
-    'QuickSlack' => JoelHinz\LaravelQuickSlack\LaravelQuickSlackFacade::class,
+    'QuickSlack' => JoelHinz\LaravelQuickSlack\Facade::class,
 ],
 ```
 
 ## Basic usage
 
-Before sending messages, all you need to do is [create an "Incoming WebHook" in Slack](https://www.slack.com/services/new/incoming-webhook) and copy the "Webhook URL".
+Before sending messages, all you need to do is go to Slack and [create an incoming webhook](https://www.slack.com/services/new/incoming-webhook), then copy the webhook url.
 
 ```php
 use QuickSlack;
@@ -69,7 +68,7 @@ Don't like how long the webhook urls get? No worries, you can just skip the firs
 QuickSlack can be used without any configuration, but you can export the configuration to get features such as a default webhook and named webhooks.
 
 ```bash
-php artisan vendor:publish --provider="JoelHinz\LaravelQuickSlackServiceProvider"
+php artisan vendor:publish --provider="JoelHinz\LaravelQuickSlack\ServiceProvider"
 ```
 
 This will create a file `config/quick-slack.php` where you can set your configuration options as follows:
@@ -141,6 +140,8 @@ Planned functionality includes
 * Support for changing channel ad-hoc
 * Support for saved teams in the configuration
 * Support for additional styling as per Slack's payload documentation
+* Custom response and exception handling
+* Global helper `quickslack($message[, $endpoint])`
 
 ## License
 

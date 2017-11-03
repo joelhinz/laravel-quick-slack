@@ -21,8 +21,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "JoelHinz\\LaravelQuickSlack\\LaravelQuickSlackServiceProvider"
-            ]
+                "JoelHinz\\LaravelQuickSlack\\ServiceProvider"
+            ],
+            "aliases": {
+                "QuickSlack": "JoelHinz\\LaravelQuickSlack\\Facade"
+            }
         }
     },
     "require-dev": {

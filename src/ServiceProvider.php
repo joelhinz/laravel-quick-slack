@@ -2,9 +2,7 @@
 
 namespace JoelHinz\LaravelQuickSlack;
 
-use Illuminate\Support\ServiceProvider;
-
-class LaravelQuickSlackServiceProvider extends ServiceProvider
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
@@ -25,8 +23,8 @@ class LaravelQuickSlackServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(LaravelQuickSlack::class, function () {
-            return new LaravelQuickSlack();
+        $this->app->singleton(QuickSlack::class, function () {
+            return new QuickSlack();
         });
     }
 }
