@@ -2,113 +2,164 @@
 
 namespace JoelHinz\LaravelQuickSlack;
 
-use Exception;
 use GuzzleHttp\Client;
 
 class LaravelQuickSlack
 {
     /**
-     * The channel to post to, either a url or the name of a channel in the config.
+     * The webhook to post to, either a url or the name of a webhook in the config.
      *
      * @var string
      */
-    private $channel;
+    private $webhook;
 
     /**
      * Messages variables that can be remembered.
      *
      * @var array
      */
-    private $memory = ['channel'];
+    private $memory = [
+        'webhook' => false,
+    ];
 
     /**
-     * Set the channel as named in the config to post to.
+     * Set the webhook as named in the config to post to.
      * Optionally remember the name for next call.
      *
-     * @param  strung $channel
-     * @param  bool $remember
+     * @param  strung $webhook
+     * @param  bool|null $remember
      * @return self
      */
-    public function to($channel, $remember = false)
+    public function to($webhook, $remember = null)
     {
-        $this->channel = $channel;
+        $this->webhook = $webhook;
 
-        $this->memory['channel'] = $remember;
+        if (!is_null($remember)) {
+            $this->memory['webhook'] = (bool) $remember;
+        }
 
         return $this;
     }
 
     /**
-     * Send a message to a Slack channel.
+     * Send a message, then reset and return self.
      *
      * @param  string $message
      * @return self
      */
     public function send($message)
     {
-        (new Client)->post($this->getEndpoint(), [
-            'headers' => ['Content-Type' => 'application/json'],
-            'body' => json_encode($message),
-        ]);
+        $this->post($message);
 
-        return $this->reset();
-    }
-
-    /**
-     * Forget message data that should not be remembered.
-     *
-     * @return self
-     */
-    public function reset()
-    {
-        foreach ($this->memory as $key => $remember) {
-            if (!$remember) {
-                $this->$key = null;
-            }
-        }
+        $this->reset();
 
         return $this;
     }
 
     /**
-     * Figure out which endpoint to use and format it if needed.
+     * Post a message to a Slack webhook.
      *
-     * @return string
+     * @param  string $message
+     * @return void
      */
-    private function getEndpoint()
+    private function post($message)
     {
-        $endpoint = $this->chooseEndpoint();
-
-        if (!starts_with($endpoint, 'http')) {
-            $endpoint .= 'https://hooks.slack.com/services/';
-        }
-
-        return $endpoint;
+        (new Client)->post($this->getWebhook(), [
+            'headers' => ['Content-Type' => 'application/json'],
+            'body' => json_encode($message),
+        ]);
     }
 
     /**
-     * Figure out which endpoint to use. In descending priority:
-     * 1. $this->to() has been used to set a url
-     * 2. $this->to() has been used to set a channel name available in config
-     * 3. config default channel is a url
-     * 4. config default channel is a channel name available in config
+     * Forget a remembered message data variable.
+     *
+     * @param  string $type
+     * @return void
+     */
+    private function forget($type)
+    {
+        if (isset($this->memory[$type])) {
+            $this->memory[$type] = false;
+        }
+    }
+
+    /**
+     * Forget the remembered webhook, if any.
+     *
+     * @return self
+     */
+    public function forgetRecipient()
+    {
+        $this->forget('webhook');
+
+        return $this;
+    }
+
+    /**
+     * Forget message data that should not be remembered.
+     *
+     * @return void
+     */
+    private function reset()
+    {
+        foreach ($this->memory as $key => $remember) {
+            if ($remember === false) {
+                $this->$key = false;
+            }
+        }
+    }
+
+    /**
+     * Figure out which webhook to use, look it up in the config file,
+     * and format it if needed.
      *
      * @return string
      */
-    private function chooseEndpoint()
+    private function getWebhook()
     {
-        if (filter_var($this->channel, FILTER_VALIDATE_URL)) {
-            return $this->channel;
+        $webhook = $this->chooseWebhook();
+
+        $webhook = $this->getWebhookFromConfigRecursively($webhook);
+
+        if (!filter_var($webhook, FILTER_VALIDATE_URL)) {
+            $webhook = 'https://hooks.slack.com/services/'.ltrim($webhook, '/');
         }
 
-        if (!is_null($this->channel)) {
-            return config('quick-slack'.$this->channel);
+        return $webhook;
+    }
+
+    /**
+     * Figure out which webhook to use. If a webhook has been set by
+     * $this->to(), use that; otherwise, use the default webhook set
+     * in the configuration file.
+     *
+     * @return string
+     */
+    private function chooseWebhook()
+    {
+        if (!is_null($this->webhook)) {
+            return $this->webhook;
         }
 
-        if (filter_var(config('quick-slack.default'), FILTER_VALIDATE_URL)) {
-            return config('quick-slack.default');
+        return config('quick-slack.default');
+    }
+
+    /**
+     * Recursively look for a webhook matching the given name
+     * in the configuration file, or return itself if none is
+     * found.
+     *
+     * @param  string $webhook
+     * @return string
+     */
+    private function getWebhookFromConfigRecursively($webhook)
+    {
+        if (is_null(config('quick-slack.webhooks.'.$webhook))) {
+            return $webhook;
         }
 
-        return config('quick-slack.'.config('quick-slack.default'));
+        return $this->getWebhookFromConfigRecursively(
+            config('quick-slack.webhooks.'.$webhook)
+        );
     }
 }
