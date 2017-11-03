@@ -12,7 +12,7 @@ composer require joelhinz/laravel-quick-slack
 
 This package supports auto-discovery, so if you're using Laravel 5.5, you're all set.
 
-For Laravel 5.4 (or lower - untested), add the provider and optionally the facade alias to your `config/app.php` file:
+For Laravel 5.4, add the provider and optionally the facade alias to your `config/app.php` file:
 
 ```php
 'providers' => [
@@ -34,23 +34,23 @@ Before sending messages, all you need to do is [create an "Incoming WebHook" in 
 ```php
 use QuickSlack;
 
-QuickSlack::to($url)->send('My hovercraft is full of eels.');
+QuickSlack::to($webhook)->send('My hovercraft is full of eels.');
 ```
 
 The webhook url can be remembered for subsequent calls during the same script execution by passing a boolean as the second argument to the `to()` method:
 
 ```php
-# Remember url for next call
-QuickSlack::to($url, true)->send('My nipples explode with delight!');
+# Remember webhook for next call
+QuickSlack::to($webhook, true)->send('My nipples explode with delight!');
 
 # No need for the to() method this time
 QuickSlack::send('I cannot wait till lunchtime.');
 
-# Set a new url - the new url will now be remembered instead
-QuickSlack::to($newUrl)->send('Drop your panties, Sir William!');
+# Set a new webhook - the new webhook will now be remembered instead
+QuickSlack::to($webhook)->send('Drop your panties, Sir William!');
 
-# Set a new url but stop remembering
-QuickSlack::to($url, false)->send('Bouncy-bouncy');
+# Set a new webhook but stop remembering
+QuickSlack::to($webhook, false)->send('Bouncy-bouncy');
 
 # Stop remembering without sending a message
 QuickSlack::forgetRecipient();
@@ -133,4 +133,4 @@ When sending a message, QuickSlack will determine which endpoint to use in the f
 
 ## License
 
-Standard MIT License (MIT), available in [LICENSE.md](LICENSE.md).
+Standard MIT License (MIT), available in [LICENSE](LICENSE).
