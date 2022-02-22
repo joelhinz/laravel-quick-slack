@@ -1,31 +1,31 @@
 {
-    "name": "joelhinz/laravel-quick-slack",
-    "description": "An easy way of quickly sending messages to predefined Slack endpoints within a Laravel project.",
-    "type": "library",
-    "require": {
-        "guzzlehttp/guzzle": "^7.0",
-        "illuminate/support": "^5.0|^6.0|^7.0|^8.0"
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Joel Hinz",
-            "email": "joel.hinz@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "JoelHinz\\LaravelQuickSlack\\": "src"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "JoelHinz\\LaravelQuickSlack\\ServiceProvider"
-            ],
-            "aliases": {
-                "QuickSlack": "JoelHinz\\LaravelQuickSlack\\Facade"
-            }
-        }
+  "name": "joelhinz/laravel-quick-slack",
+  "description": "An easy way of quickly sending messages to predefined Slack endpoints within a Laravel project.",
+  "type": "library",
+  "require": {
+    "guzzlehttp/guzzle": "^7.0|^7.1|^7.2|^7.3|^7.4",
+    "illuminate/support": "^5.0|^6.0|^7.0|^8.0|^8.1|^9.0"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Joel Hinz",
+      "email": "joel.hinz@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "JoelHinz\\LaravelQuickSlack\\": "src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "JoelHinz\\LaravelQuickSlack\\ServiceProvider"
+      ],
+      "aliases": {
+        "QuickSlack": "JoelHinz\\LaravelQuickSlack\\Facade"
+      }
+    }
+  }
 }

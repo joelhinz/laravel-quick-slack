@@ -1,6 +1,6 @@
 # Laravel QuickSlack
 
-A simple package to quickly send messages to Slack channels through Laravel. Tested with Laravel 5.4 and 5.5.
+A simple package to quickly send messages to Slack channels through Laravel. Tested with Laravel 5.4 through 8.
 
 ## Installation
 
